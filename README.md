@@ -1,49 +1,152 @@
-# Brain Tumor Detection Using Federated Learning
-This project explores the use of federated learning to detect brain tumors from MRI scans while preserving data privacy.
-## Project Structure
-* `clients/`: Contains the code and logic for the individual client participants (e.g., simulated hospitals) in the federated learning setup.
-* `input_images_to_test/`: This directory is likely for storing sample images that can be used to test the trained model.
-* `server/`: This directory holds the code for the federated learning server, responsible for aggregating model updates from clients.
-* `Brain_Tumor.py`: This Python file probably contains the core deep learning model definition and the main training or inference logic for the brain tumor detection.
+# 🧠 Brain Tumor Detection using Federated Learning
 
-## Project Visual
-![Screenshot of project structure](Screenshot%202024-09-22%20155106.png)
+This project implements a **privacy-preserving brain tumor detection system** using **Federated Learning (FL)**. It uses MRI images to detect the presence of a tumor and estimates its **severity percentage** along with a **medical description** — all without directly sharing patient data.
 
-## How to Use
+---
 
-To run this project:
+## 📌 Table of Contents
 
-1.  **Clone the repository:**
-    ```bash
-    git clone [https://github.com/Pranav-95/Federated_learning_Brain_tumor_Detection.git](https://github.com/Pranav-95/Federated_learning_Brain_tumor_Detection.git)
-    cd Federated_learning_Brain_tumor_Detection
-    ```
-2.  **Create and activate a Python virtual environment:**
-    ```bash
-    python -m venv fl_env
-    source fl_env/bin/activate  # Use `.\fl_env\Scripts\activate` on Windows
-    ```
-3.  **Install dependencies:**
-    *(You will need to check your project for a `requirements.txt` file or list libraries here)*
-    ```bash
-    pip install tensorflow numpy pandas scikit-learn flwr # Example libraries
-    ```
-4.  **Download the dataset:**
-    * Obtain the "Brain Tumor Classification (MRI)" dataset from Kaggle.
-    * Place the extracted dataset files into a `data/` folder within this project directory. (You might need to create this folder if it doesn't exist: `mkdir data`).
-5.  **Run the Federated Learning simulation:**
-    * Open two or more separate terminal windows.
-    * In each terminal, activate your virtual environment (`source fl_env/bin/activate`).
-    * In one terminal, start the **server**:
-        ```bash
-        python server.py
-        ```
-    * In the other terminals, start the **clients** (replace `0` with `1`, `2`, `3`, `4`, `5` for each client):
-        ```bash
-        python clients/client.py --cid 0 # Assuming 'clients' folder and 'client.py' and '--cid' argument
-        ```
-        *(**Note:** The exact command for running clients might vary, check your `client.py` file or any other instructions in your project.)*
+1. [📖 Project Overview](#-project-overview)  
+2. [🛠 Tech Stack Used](#-tech-stack-used)  
+3. [🔄 How Federated Learning Works](#-how-federated-learning-works)  
+4. [🧬 Dataset Details](#-dataset-details)  
+5. [🤖 Model Details](#-model-details)  
+6. [📊 Severity Prediction Logic](#-severity-prediction-logic)  
+7. [🖥️ Frontend & Backend](#-frontend--backend)  
+8. [📈 Project Flowchart](#-project-flowchart)  
+9. [🚀 How to Run the Project](#-how-to-run-the-project)  
+10. [✅ Conclusion](#-conclusion)
 
-## Results
+---
 
-[Describe your model's accuracy, precision, recall, or other performance metrics here. You could add more result screenshots if you have them.]
+## 📖 Project Overview
+
+Brain tumor detection via MRI is crucial in early diagnosis and treatment. This project prioritizes **data privacy** by using **Federated Learning**, where patient data never leaves the device or hospital.
+
+### 🔍 Features:
+- Detects presence of brain tumor (Yes/No)
+- Predicts severity percentage
+- Shows severity level with a medical advisory
+- Deploys results on a clean web interface
+
+---
+
+## 🛠 Tech Stack Used
+
+| Component        | Tech Used             |
+|------------------|------------------------|
+| Model            | TensorFlow / Keras     |
+| Programming Lang | Python                 |
+| Federated Sim    | Manual (offline)       |
+| Backend          | Flask                  |
+| Frontend         | HTML, CSS, JS, Bootstrap |
+| Image Processing | OpenCV, Numpy, Matplotlib |
+
+---
+
+## 🔄 How Federated Learning Works
+
+This is a **simulated** Federated Learning setup:
+
+1. Local MRI image data resides on simulated clients.
+2. Each client trains the model independently on its local data.
+3. Only **model weights** are sent to a central server.
+4. The server **aggregates weights manually** to form a global model.
+5. The final model (`trained_global_model.h5`) is used in the web app for inference only.
+
+✅ **Data never leaves the local machine** during training — ensuring privacy.
+
+---
+
+## 🧬 Dataset Details
+
+- **Source**: Brain MRI Images Dataset (open dataset)
+- **Classes**: 
+  - `yes/` — Tumor Present  
+  - `no/` — Tumor Absent
+- **Original Size**: 
+  - Yes: 155 images  
+  - No: 98 images
+- **After Augmentation**: ~600+ images
+- **Train/Test Split**: 80% Train, 20% Test
+
+---
+
+## 🤖 Model Details
+
+- **Architecture**: Convolutional Neural Network (CNN)
+- **Loss Function**: Binary Crossentropy
+- **Optimizer**: Adam
+- **Evaluation**: Achieved over **95% accuracy** on validation data
+- **Output**: Binary classification (tumor/no tumor) + confidence score
+
+---
+
+## 📊 Severity Prediction Logic
+
+When a tumor is detected:
+- The **model’s prediction confidence** is converted into a **severity percentage**.
+- Based on this value, a **medical description** is generated.
+
+### 🎯 Example Output:
+
+Tumor Detected
+🧪 Tumor Severity: 87%
+⚠️ This indicates a high-severity tumor and immediate medical attention is advised.
+
+
+---
+
+## 🖥️ Frontend & Backend
+
+### 🔧 Backend:
+- Flask server (`web_app.py`)
+- Handles file uploads, model loading, and predictions
+
+### 🎨 Frontend:
+- HTML + CSS + Bootstrap
+- Displays results: MRI image, tumor presence, severity, and advisory
+
+---
+
+## 📈 Project Flowchart
+
+graph TD
+A[Start] --> B[Load Local Data on Clients]
+B --> C[Train Local Models]
+C --> D[Send Weights to Server]
+D --> E[Aggregate Model Weights]
+E --> F[Save Global Model]
+F --> G[Deploy via Flask Web App]
+
+## 🚀 How to Run the Project
+
+1. Clone the repository
+      git clone https://github.com/your-username/your-repo-name.git
+
+2. Navigate to project directory
+      cd your-repo-name/WebApp
+
+3. Install dependencies
+      pip install -r requirements.txt
+
+4. Run the Flask app
+      python web_app.py
+
+5. Visit in browser
+      http://127.0.0.1:5000/
+
+## ✅ Conclusion
+This project demonstrates a privacy-first approach to medical image classification using Federated Learning.
+
+🔑 Key Takeaways:
+✔️ Accurate CNN-based tumor classification
+
+✔️ Severity scoring with medical interpretation
+
+✔️ User-friendly web interface with instant predictions
+
+✔️ Privacy-preserving training simulation via federated approach
+
+⚠️ This tool is for research and educational purposes. Clinical decisions should always involve a medical professional.
+
